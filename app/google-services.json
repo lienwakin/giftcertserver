@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "706794391252",
+    "firebase_url": "https://giftcerts-b4af9.firebaseio.com",
+    "project_id": "giftcerts-b4af9",
+    "storage_bucket": "giftcerts-b4af9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:706794391252:android:4940f11fd02751ad",
+        "android_client_info": {
+          "package_name": "com.burgers.raffy.giftcertsserver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "706794391252-hfsp42q04i1ei8gliooqs64g63597lii.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8tR5_c3w4MirZEfkfPjD7eBNvZTZeUWE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
