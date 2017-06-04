@@ -36,24 +36,24 @@ public class SmsReceiver extends BroadcastReceiver{
                 String sender = messages[0].getOriginatingAddress();
                 String[] message = sb.toString().split(" ");
                 if(Constants.ALLOWED_NUMBER.equals(sender)){
-                    switch(message[0]){
-                        case Constants.ADD:
-                            DBUtils.addToDB(context, message[1], message[2], message[3]);
-                            break;
-                        case Constants.UPDATE:
-                            Cursor cursor = DBUtils.searchDB(context, null, null);
-                            String data = "";
-                            while(cursor.moveToNext()){
-                                data += cursor.getString(cursor.getColumnIndex(Constants.TABLE_ID));
-                                data += " "+cursor.getString(cursor.getColumnIndex(Constants.COLUMN_NAME));
-                                data += " "+cursor.getString(cursor.getColumnIndex(Constants.COLUMN_AMOUNT));
-                                data += " "+cursor.getString(cursor.getColumnIndex(Constants.COLUMN_COLLECT));
-                                data += " "+cursor.getString(cursor.getColumnIndex(Constants.COLUMN_KEY));
-                                data += "\n";
-                            }
-                            Utils.sendMessage(context, data);
-                            break;
-                    }
+//                    switch(message[0]){
+//                        case Constants.ADD:
+//                            DBUtils.addToDB(context, message[1], message[2], message[3]);
+//                            break;
+//                        case Constants.UPDATE:
+//                            Cursor cursor = DBUtils.searchDB(context, null, null);
+//                            String data = "";
+//                            while(cursor.moveToNext()){
+//                                data += cursor.getString(cursor.getColumnIndex(Constants.TABLE_ID));
+//                                data += " "+cursor.getString(cursor.getColumnIndex(Constants.COLUMN_NAME));
+//                                data += " "+cursor.getString(cursor.getColumnIndex(Constants.COLUMN_AMOUNT));
+//                                data += " "+cursor.getString(cursor.getColumnIndex(Constants.COLUMN_COLLECT));
+//                                data += " "+cursor.getString(cursor.getColumnIndex(Constants.COLUMN_KEY));
+//                                data += "\n";
+//                            }
+//                            Utils.sendMessage(context, data);
+//                            break;
+//                    }
                 }
                 // prevent any other broadcast receivers from receiving broadcast
 //                abortBroadcast();

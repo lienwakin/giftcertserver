@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Gift Certs Server</string>
+
+    <string name="send_as_text">Send as Text</string>
+    <string name="share">Share via</string>
+    <string name="confim_sent">"Message sent!"</string>
 </resources>

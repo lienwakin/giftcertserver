@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -11,6 +12,7 @@ import android.telephony.SmsManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.burgers.raffy.giftcertsserver.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -90,10 +92,22 @@ public class Utils {
             for(String indiMessage : dividedMessage){
                 smsManager.sendTextMessage(Constants.SERVER_NUMBER, null, indiMessage, null, null);
             }
-            Toast.makeText(context, Constants.CONFIRMATION_MESSAGE, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.confim_sent, Toast.LENGTH_SHORT).show();
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public static boolean isThereSameKey(Context context, String key){
+        // Filter results WHERE "title" = 'My Title'
+        String selection = Constants.COLUMN_KEY + " = ? ";
+        String[] selectionArgs = { key };
+
+        Cursor cursor = DBUtils.searchDB(context, selection, selectionArgs);
+
+        if(cursor.getCount()==0){
+            return false;
+        }else return true;
     }
 
 }

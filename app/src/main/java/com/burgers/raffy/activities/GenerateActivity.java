@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.burgers.raffy.giftcertsserver.R;
 import com.burgers.raffy.utils.Constants;
@@ -36,7 +37,7 @@ public class GenerateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generate);
-        Button generateQR = (Button)findViewById(R.id.generateQR);
+        final Button generateQR = (Button)findViewById(R.id.generateQR);
         generateQR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,16 +49,22 @@ public class GenerateActivity extends AppCompatActivity {
                 String amount = amountEdit.getText().toString();
 
                 randomKey = generateRandomString();
-                while(isThereSameKey(randomKey)){
+                while(Utils.isThereSameKey(GenerateActivity.this, randomKey)){
                     randomKey = generateRandomString();
                 }
 
                 Utils.hideKeyboard(GenerateActivity.this);
                 try {
-                    Bitmap bitmap = Utils.encodeAsBitmap(randomKey);
+                    final Bitmap bitmap = Utils.encodeAsBitmap(randomKey);
                     imageView.setImageBitmap(bitmap);
                     DBUtils.addToDB(GenerateActivity.this, name, amount, randomKey);
-                    Utils.shareImage(GenerateActivity.this, bitmap);
+                    Utils.sendMessage(GenerateActivity.this, Constants.ADD+" "+name+" "+amount+" "+randomKey);
+                    generateQR.setText(R.string.share);
+                    generateQR.setOnClickListener(new View.OnClickListener(){
+                        public void onClick(View v){
+                            Utils.shareImage(GenerateActivity.this, bitmap);
+                        }
+                    });
                 } catch (WriterException e) {
                     e.printStackTrace();
                 }
@@ -71,17 +78,5 @@ public class GenerateActivity extends AppCompatActivity {
             randomString += symbols[random.nextInt(symbols.length)];
         }
         return randomString;
-    }
-
-    private boolean isThereSameKey(String key){
-        // Filter results WHERE "title" = 'My Title'
-        String selection = Constants.COLUMN_KEY + " = ? ";
-        String[] selectionArgs = { key };
-
-        Cursor cursor = DBUtils.searchDB(this, selection, selectionArgs);
-
-        if(cursor.getCount()==0){
-            return false;
-        }else return true;
     }
 }
