@@ -90,7 +90,7 @@ public class Utils {
             SmsManager smsManager = SmsManager.getDefault();
             ArrayList<String> dividedMessage = smsManager.divideMessage(message);
             for(String indiMessage : dividedMessage){
-                smsManager.sendTextMessage(Constants.SERVER_NUMBER, null, indiMessage, null, null);
+                smsManager.sendTextMessage(Constants.ALLOWED_NUMBER, null, indiMessage, null, null);
             }
             Toast.makeText(context, R.string.confim_sent, Toast.LENGTH_SHORT).show();
         }catch (Exception e){
