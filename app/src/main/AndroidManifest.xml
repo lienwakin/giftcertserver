@@ -27,12 +27,6 @@
         <activity android:name="com.burgers.raffy.activities.CheckActivity" />
         <activity android:name="com.burgers.raffy.activities.ListActivity" />
 
-        <receiver android:name="com.burgers.raffy.receivers.SmsReceiver">
-            <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-            </intent-filter>
-        </receiver>
-
         <activity android:name="com.burgers.raffy.activities.CongratulatoryActivity"></activity>
     </application>
 

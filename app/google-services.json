@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:706794391252:android:4940f11fd02751ad",
         "android_client_info": {
-          "package_name": "com.burgers.raffy.giftcertsserver"
+          "package_name": "com.burgers.raffy.giftcerts"
         }
       },
       "oauth_client": [
@@ -31,6 +31,50 @@
         "appinvite_service": {
           "status": 1,
           "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:706794391252:android:74ed93a273f9e3f1",
+        "android_client_info": {
+          "package_name": "com.burgers.raffy.giftcertsserver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "706794391252-2nguvd23lsrv29fqhhpk2bcr01shd9s9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.burgers.raffy.giftcertsserver",
+            "certificate_hash": "ae052f974a14b1503fe845a8d80eff9b549b8926"
+          }
+        },
+        {
+          "client_id": "706794391252-hfsp42q04i1ei8gliooqs64g63597lii.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8tR5_c3w4MirZEfkfPjD7eBNvZTZeUWE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "706794391252-hfsp42q04i1ei8gliooqs64g63597lii.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

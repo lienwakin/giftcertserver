@@ -58,7 +58,7 @@ public class GenerateActivity extends AppCompatActivity {
                     final Bitmap bitmap = Utils.encodeAsBitmap(randomKey);
                     imageView.setImageBitmap(bitmap);
                     DBUtils.addToDB(GenerateActivity.this, name, amount, randomKey);
-                    Utils.sendMessage(GenerateActivity.this, Constants.ADD+" "+name+" "+amount+" "+randomKey);
+//                    Utils.sendMessage(GenerateActivity.this, Constants.ADD+" "+name+" "+amount+" "+randomKey);
                     generateQR.setText(R.string.share);
                     generateQR.setOnClickListener(new View.OnClickListener(){
                         public void onClick(View v){

@@ -7,6 +7,11 @@ import android.view.View;
 import android.widget.Button;
 
 import com.burgers.raffy.giftcertsserver.R;
+import com.burgers.raffy.utils.Constants;
+import com.burgers.raffy.utils.FirebaseHelper;
+import com.burgers.raffy.utils.Utils;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
     Intent intent;
@@ -22,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
         clickListener(check, new Intent(this, CheckActivity.class));
         clickListener(list, new Intent(this, ListActivity.class));
 //        clickListener(delete, new Intent(this, DeleteEntryActivity.class));
+        FirebaseHelper firebase = new FirebaseHelper(this);
+        firebase.signIn(Constants.ADMIN,Constants.ADMIN_PASSWORD);
+
     }
 
     private void clickListener(Button button, final Intent intent){

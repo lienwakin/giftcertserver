@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
@@ -85,18 +86,18 @@ public class Utils {
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
-    public static void sendMessage(Context context, String message){
-        try {
-            SmsManager smsManager = SmsManager.getDefault();
-            ArrayList<String> dividedMessage = smsManager.divideMessage(message);
-            for(String indiMessage : dividedMessage){
-                smsManager.sendTextMessage(Constants.ALLOWED_NUMBER, null, indiMessage, null, null);
-            }
-            Toast.makeText(context, R.string.confim_sent, Toast.LENGTH_SHORT).show();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+//    public static void sendMessage(Context context, String message){
+//        try {
+//            SmsManager smsManager = SmsManager.getDefault();
+//            ArrayList<String> dividedMessage = smsManager.divideMessage(message);
+//            for(String indiMessage : dividedMessage){
+//                smsManager.sendTextMessage(Constants.ALLOWED_NUMBER, null, indiMessage, null, null);
+//            }
+//            Toast.makeText(context, R.string.confim_sent, Toast.LENGTH_SHORT).show();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 
     public static boolean isThereSameKey(Context context, String key){
         // Filter results WHERE "title" = 'My Title'
@@ -110,4 +111,7 @@ public class Utils {
         }else return true;
     }
 
+    public static void log(String message){
+        Log.d(Constants.LOG, message);
+    }
 }

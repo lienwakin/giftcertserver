@@ -19,7 +19,7 @@ public class DialogUtils {
         builder.setMessage(name+" "+amount)
                 .setPositiveButton(R.string.send_as_text, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Utils.sendMessage(context, Constants.ADD+" "+name+" "+amount+" "+key);
+//                        Utils.sendMessage(context, Constants.ADD+" "+name+" "+amount+" "+key);
                     }
                 })
                 .setNegativeButton(R.string.share, new DialogInterface.OnClickListener() {

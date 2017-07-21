@@ -28,7 +28,17 @@ public class Constants {
     public static final String UPDATE = "UPDATE";
 
     //phone number
-    public static final String ALLOWED_NUMBER = "+639228862629";
-    public static final String SERVER_NUMBER = "+639178665538";
+//    public static final String ALLOWED_NUMBER = "+639228862629";
+//    public static final String SERVER_NUMBER = "+639178665538";
+
+    //Firebase User
+    public static final String ADMIN = "speedshot001@gmail.com";
+    public static final String ADMIN_PASSWORD = "superman";
+    public static final String GENERAL = "raffysburger@gmail.com";
+    public static final String GENERAL_PASSWORD = "pangetSiRaffy";
+
+    //Log
+    public static final String LOG = "== GiftCerts ==";
+
 
 }
