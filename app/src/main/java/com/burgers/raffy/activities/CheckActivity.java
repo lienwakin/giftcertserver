@@ -1,22 +1,26 @@
 package com.burgers.raffy.activities;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.burgers.raffy.giftcertsserver.R;
+import com.burgers.raffy.models.Winners;
 import com.burgers.raffy.utils.Constants;
-import com.burgers.raffy.utils.DBUtils;
+import com.burgers.raffy.utils.FirebaseHelper;
+import com.burgers.raffy.utils.Utils;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class CheckActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScannerView;
-
+    private String result;
+    private String TAG = CheckActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,33 +36,48 @@ public class CheckActivity extends AppCompatActivity implements ZXingScannerView
     }
 
     public void handleResult(Result rawResult) {
-        String result = rawResult.getText().toString();
+        result = rawResult.getText().toString();
 
-        // Filter results WHERE "title" = 'My Title'
-        String selection = Constants.COLUMN_KEY + " = ? and " +
-                Constants.COLUMN_COLLECT + " = ? ";
-        String[] selectionArgs = { result, "0" };
-
-        Cursor cursor = DBUtils.searchDB(this, selection, selectionArgs);
-
-        if(cursor.getCount()>0){
-            //start is null so move to next
-            cursor.moveToNext();
-            String name = cursor.getString(cursor.getColumnIndex(Constants.COLUMN_NAME));
-            String amount = cursor.getString(cursor.getColumnIndex(Constants.COLUMN_AMOUNT));
-            Intent intent = new Intent(this, CongratulatoryActivity.class);
-            intent.putExtra(Constants.NAME, name);
-            intent.putExtra(Constants.AMOUNT, amount);
-            startActivity(intent);
-
-            String selectionNotClaimed = Constants.COLUMN_KEY + " = ?";
-            String[] selectionArgsNotClaimed = { result };
-
-            ContentValues values = new ContentValues();
-            values.put(Constants.COLUMN_COLLECT, 1);
-
-            DBUtils.updateDB(this, values, selectionNotClaimed, selectionArgsNotClaimed);
-        }else Toast.makeText(this, "Not valid", Toast.LENGTH_LONG).show();
-        finish();
+        FirebaseHelper.getDatabaseRef().addListenerForSingleValueEvent(valueEventListener);
     }
+
+    public void processResult(Winners[] winners){
+        for(int a=0;a<winners.length;a++){
+            if(result.equals(winners[a].getKey()) && winners[a].isClaimed()){
+                String name = winners[a].getName();
+                String amount = winners[a].getAmount();
+
+                winners[a].setClaimed(true);
+                FirebaseHelper.updateData(winners[a],winners[a].getKey());
+
+                Intent intent = new Intent(this, CongratulatoryActivity.class);
+                intent.putExtra(Constants.NAME, name);
+                intent.putExtra(Constants.AMOUNT, amount);
+                startActivity(intent);
+                return;
+            }
+        }
+        Toast.makeText(this, "Not valid", Toast.LENGTH_LONG).show();
+        return;
+    }
+
+    private ValueEventListener valueEventListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            int a=0;
+            Winners[] winners = new Winners[(int)dataSnapshot.getChildrenCount()];
+            for(DataSnapshot data : dataSnapshot.getChildren()){
+                winners[a] = new Winners((String)data.child(Constants.NAME).getValue(), (String)data.child(Constants.KEY).getValue(),
+                        (String)data.child(Constants.AMOUNT).getValue(), (boolean)data.child(Constants.CLAIMED).getValue());
+                a+=1;
+            }
+            processResult(winners);
+            finish();
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            Utils.log(TAG + " " + databaseError.toString());
+        }
+    };
 }

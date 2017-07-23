@@ -14,22 +14,22 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
-    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Button generate = (Button) findViewById(R.id.generate);
-        Button check = (Button) findViewById(R.id.check);
-        Button list = (Button) findViewById(R.id.list);
-//        Button delete = (Button) findViewById(R.id.delete);
-        clickListener(generate, new Intent(this, GenerateActivity.class));
-        clickListener(check, new Intent(this, CheckActivity.class));
-        clickListener(list, new Intent(this, ListActivity.class));
-//        clickListener(delete, new Intent(this, DeleteEntryActivity.class));
-        FirebaseHelper firebase = new FirebaseHelper(this);
-        firebase.signIn(Constants.ADMIN,Constants.ADMIN_PASSWORD);
-
+        if(getIntent().getAction().equals(Constants.SET_MAIN_ACTIVITY)){
+            setContentView(R.layout.activity_main);
+            Button generate = (Button) findViewById(R.id.generate);
+            Button check = (Button) findViewById(R.id.check);
+            Button list = (Button) findViewById(R.id.list);
+            clickListener(generate, new Intent(this, GenerateActivity.class));
+            clickListener(check, new Intent(this, CheckActivity.class));
+            clickListener(list, new Intent(this, ListActivity.class));
+        }else {
+            setContentView(R.layout.activity_splash);
+            FirebaseHelper firebase = new FirebaseHelper(this);
+            firebase.signIn(Constants.ADMIN, Constants.ADMIN_PASSWORD);
+        }
     }
 
     private void clickListener(Button button, final Intent intent){

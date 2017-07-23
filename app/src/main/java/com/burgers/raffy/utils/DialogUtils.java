@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.burgers.raffy.activities.GenerateActivity;
 import com.burgers.raffy.giftcertsserver.R;
+import com.burgers.raffy.models.Winners;
 
 /**
  * Created by Neil on 6/4/2017.
@@ -17,9 +18,9 @@ public class DialogUtils {
     public static AlertDialog createDialogList(final Context context, Activity activity, final String name, final String amount, final String key){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setMessage(name+" "+amount)
-                .setPositiveButton(R.string.send_as_text, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.Delete, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-//                        Utils.sendMessage(context, Constants.ADD+" "+name+" "+amount+" "+key);
+                        FirebaseHelper.deleteData(key);
                     }
                 })
                 .setNegativeButton(R.string.share, new DialogInterface.OnClickListener() {

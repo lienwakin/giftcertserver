@@ -1,9 +1,11 @@
 package com.burgers.raffy.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import com.burgers.raffy.activities.MainActivity;
 import com.burgers.raffy.models.Winners;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,47 +26,42 @@ public class FirebaseHelper {
     private static FirebaseAuth mAuth;
     private static Context context;
     private static final String TAG = FirebaseHelper.class.getSimpleName();
-    private static FirebaseUser user;
+    private static DatabaseReference mDatabase;
     public FirebaseHelper(Context context){
         this.context = context;
         mAuth = FirebaseAuth.getInstance();
     }
-    public static FirebaseUser signIn(String email, String password) {
+    public static void signIn(String email, String password) {
         try {
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        user = mAuth.getCurrentUser();
-                        firebaseData();
-                        Toast.makeText(context, "Authentication success", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(context, "Authentication failed", Toast.LENGTH_LONG).show();
+                if (task.isSuccessful()) {
+                    mDatabase = FirebaseDatabase.getInstance().getReference(Constants.WINNERS);
+                    Toast.makeText(context, "Authentication success", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.setAction(Constants.SET_MAIN_ACTIVITY);
+                    context.startActivity(intent);
+                } else {
+                    Toast.makeText(context, "Authentication failed", Toast.LENGTH_LONG).show();
 
-                    }
+                }
                 }
             });
-            return user;
         }catch(Exception e){
             Utils.log(TAG+" "+e.getMessage());
         }
-        return null;
     }
 
-    public static void firebaseData(){
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("winners");
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Utils.log(dataSnapshot.toString());
-            }
+    public static void updateData(Winners winner, String key){
+        mDatabase.child(key).setValue(winner);
+    }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+    public static DatabaseReference getDatabaseRef(){
+        return mDatabase;
+    }
 
-            }
-        });
-        Winners winner = new Winners("ipe", "654");
-        mDatabase.child("1").setValue(winner);
+    public static void deleteData(String key){
+        mDatabase.child(key).removeValue();
     }
 }

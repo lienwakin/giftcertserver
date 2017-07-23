@@ -19,14 +19,13 @@
         <activity android:name="com.burgers.raffy.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="com.burgers.raffy.giftcertsserver.SET_MAIN_ACTIVITY" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name="com.burgers.raffy.activities.GenerateActivity" />
         <activity android:name="com.burgers.raffy.activities.CheckActivity" />
         <activity android:name="com.burgers.raffy.activities.ListActivity" />
-
         <activity android:name="com.burgers.raffy.activities.CongratulatoryActivity"></activity>
     </application>
 

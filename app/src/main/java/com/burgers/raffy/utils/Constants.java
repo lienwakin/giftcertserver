@@ -26,10 +26,7 @@ public class Constants {
     public static final String NAME = "name";
     public static final String AMOUNT = "amount";
     public static final String UPDATE = "UPDATE";
-
-    //phone number
-//    public static final String ALLOWED_NUMBER = "+639228862629";
-//    public static final String SERVER_NUMBER = "+639178665538";
+    public static final String KEY = "key";
 
     //Firebase User
     public static final String ADMIN = "speedshot001@gmail.com";
@@ -39,6 +36,11 @@ public class Constants {
 
     //Log
     public static final String LOG = "== GiftCerts ==";
+
+    //firebase
+    public static final String WINNERS = "winners";
+    public static final String CLAIMED = "claimed";
+    public static final String SET_MAIN_ACTIVITY = "com.burgers.raffy.giftcertsserver.SET_MAIN_ACTIVITY";
 
 
 }

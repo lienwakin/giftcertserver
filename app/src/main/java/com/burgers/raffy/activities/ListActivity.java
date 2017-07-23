@@ -6,15 +6,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.burgers.raffy.giftcertsserver.R;
+import com.burgers.raffy.models.Winners;
 import com.burgers.raffy.utils.Constants;
-import com.burgers.raffy.utils.DBUtils;
 import com.burgers.raffy.utils.DialogUtils;
+import com.burgers.raffy.utils.FirebaseHelper;
+import com.burgers.raffy.utils.Utils;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 public class ListActivity extends AppCompatActivity {
-
+    private String TAG = ListActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,23 +26,23 @@ public class ListActivity extends AppCompatActivity {
         readFromDatabase();
     }
 
-    private void readFromDatabase(){
+    private void readFromDatabase() {
+        FirebaseHelper.getDatabaseRef().addListenerForSingleValueEvent(valueEventListener);
+    }
+
+    private void processData(Winners[] winners){
         LinearLayout linearLayout = (LinearLayout)findViewById(R.id.linearLayoutList);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
 
-        Cursor cursor = DBUtils.searchDB(this, null, null);
-
-        while(cursor.moveToNext()){
-            String name = cursor.getString(cursor.getColumnIndex(Constants.COLUMN_NAME));
-            String amount = cursor.getString(cursor.getColumnIndex(Constants.COLUMN_AMOUNT));
-            String key = cursor.getString(cursor.getColumnIndex(Constants.COLUMN_KEY));
-
-            String temp = "";
-            temp = "" + cursor.getInt(cursor.getColumnIndex(Constants.TABLE_ID));
-            temp +=  " " + name;
-            temp += " " + amount;
-            if(cursor.getInt(cursor.getColumnIndex(Constants.COLUMN_COLLECT)) == 1){
-                temp += " claimed";
+        String temp = "";
+        for(int a=0;a<winners.length;a++) {
+            temp = "";
+            String name = winners[a].getName();
+            String amount = winners[a].getAmount();
+            String key = winners[a].getKey();
+            temp += name + " " + amount;
+            if (winners[a].isClaimed()) {
+                temp += " claimed!";
             }
             Button button = new Button(this);
             button.setText(temp);
@@ -54,4 +58,23 @@ public class ListActivity extends AppCompatActivity {
             }
         });
     }
+    private ValueEventListener valueEventListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            int a=0;
+            Winners[] winners = new Winners[(int)dataSnapshot.getChildrenCount()];
+            for(DataSnapshot data : dataSnapshot.getChildren()){
+                winners[a] = new Winners((String)data.child(Constants.NAME).getValue(), (String)data.child(Constants.KEY).getValue(),
+                        (String)data.child(Constants.AMOUNT).getValue(), (boolean)data.child(Constants.CLAIMED).getValue());
+                a+=1;
+            }
+            processData(winners);
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            Utils.log(TAG + " " + databaseError.toString());
+        }
+    };
+
 }
